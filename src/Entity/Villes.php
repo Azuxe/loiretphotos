@@ -5,9 +5,13 @@ namespace App\Entity;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
+
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\VillesRepository")
+ * @UniqueEntity("nom")
  */
 class Villes
 {
@@ -20,21 +24,25 @@ class Villes
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=false, unique=true)
+     * @Groups({"villes", "cliches"})
+     * @ORM\Column(type="string", length=255, nullable=false,unique=true)
      */
     private $nom;
 
     /**
+     * @Groups({"villes", "cliches"})
      * @ORM\Column(type="float", nullable=true)
      */
     private $lat;
 
     /**
+     * @Groups({"villes", "cliches"})
      * @ORM\Column(type="float", nullable=true)
      */
     private $longi;
 
     /**
+     * @Groups({"villes"})
      * Une ville a de 0 à N clichés
      * @ORM\ManyToMany(targetEntity="App\Entity\Cliches", inversedBy="villes")
      * @ORM\JoinTable(name="villes_cliches")

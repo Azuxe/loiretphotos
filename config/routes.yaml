@@ -1,3 +1,35 @@
 #index:
 #    path: /
 #    controller: App\Controller\DefaultController::index
+
+villes:
+    type:     rest
+    resource: App\Controller\VillesController
+
+tailles:
+    type:     rest
+    resource: App\Controller\TaillesController
+
+sujets:
+    type:     rest
+    resource: App\Controller\SujetsController
+
+series:
+    type:     rest
+    resource: App\Controller\SeriesController
+
+indexpersonnes:
+    type:     rest
+    resource: App\Controller\IndexPersonnesController
+
+indexiconographiques:
+    type:     rest
+    resource: App\Controller\IndexIconographiquesController
+
+cliches:
+    type:     rest
+    resource: App\Controller\ClichesController
+
+cindoc:
+    type:     rest
+    resource: App\Controller\CindocController

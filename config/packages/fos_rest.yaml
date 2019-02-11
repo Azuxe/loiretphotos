@@ -15,11 +15,10 @@
 #            - { path: ^/api, prefer_extension: true, fallback_format: json, priorities: [ json, html ] }
 
 fos_rest:
-    body_converter:
-        enabled: true
-    view:
-        formats: { json: true, xml: false, rss: false }
-    serializer:
-        serialize_null: true
     routing_loader:
-        default_format: json
+        include_format: false
+    view:
+        view_response_listener: force
+    format_listener:
+        rules:
+            - { path: '^/', priorities: ['json'], fallback_format: 'json' }

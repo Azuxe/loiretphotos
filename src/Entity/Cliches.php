@@ -5,6 +5,8 @@ namespace App\Entity;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
+
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ClichesRepository")
@@ -13,6 +15,7 @@ class Cliches
 {
 
     /**
+     * @Groups({"villes", "cliches"})
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -20,47 +23,56 @@ class Cliches
     private $id;
 
     /**
+     * @Groups({"cliches"})
      * Des clichés ont plusieurs villes
      * @ORM\ManyToMany(targetEntity="App\Entity\Villes", mappedBy="cliches", cascade={"persist"})
      */
     private $villes;
 
     /**
+     * @Groups({"villes", "cliches"})
      * @ORM\Column(type="text", nullable=true)
      */
     private $description;
 
     /**
+     * @Groups({"villes", "cliches"})
      * @ORM\Column(type="date", nullable=true)
      */
     private $date_de_prise;
 
     /**
+     * @Groups({"villes", "cliches"})
      * @ORM\Column(type="text", nullable=true)
      */
     private $fichier;
 
     /**
+     * @Groups({"villes", "cliches"})
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $support;
 
     /**
+     * @Groups({"villes", "cliches"})
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $chroma;
 
     /**
+     * @Groups({"villes", "cliches"})
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $discriminant;
 
     /**
+     * @Groups({"villes", "cliches"})
      * @ORM\Column(type="integer", nullable=false)
      */
     private $nb_Cliche;
 
     /**
+     * @Groups({"villes", "cliches"})
      * @ORM\Column(type="text", nullable=true)
      */
     private $note_de_bas_De_Page;
@@ -98,6 +110,7 @@ class Cliches
     private $indexIconographiques;
 
     /**
+     * @Groups({"villes", "cliches"})
      * @ORM\Column(type="text", nullable=true)
      */
     private $remarque;

@@ -37,10 +37,10 @@ class ClichesFixtures extends Fixture implements DependentFixtureInterface
             $cliches->addCindoc($this->getReference("ABC".strval($i)));
 
             $cliches->setTaille($this->getReference("taille".strval($i)));
-            $cliches->addSujet($this->getReference("sujet"));
+            $cliches->addSujet($this->getReference("sujet".strval($i)));
             $cliches->setSerie($this->getReference("serie"));
-            $cliches->addIndexIconographique($this->getReference("indexIco"));
-            $cliches->addIndexPersonne($this->getReference("IndexPer"));
+            $cliches->addIndexIconographique($this->getReference("IndexIco".strval($i)));
+            $cliches->addIndexPersonne($this->getReference("IndexPer".strval($i)));
             $cliches->setNbCliche(1);
 
             $cliches->addVille($this->getReference("ville".strval($i)));

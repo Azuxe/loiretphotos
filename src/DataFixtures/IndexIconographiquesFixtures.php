@@ -10,11 +10,15 @@ class IndexIconographiquesFixtures extends Fixture
 {
     public function load(ObjectManager $manager)
     {
-        $index = new IndexIconographiques();
-        $index->setIndexIco("Notre-Dames-D'Orléans");
-        $manager->persist($index);
-        $this->addReference("indexIco", $index);
+        $array = ["Stele","Fleuve","Rivière","Lac","Chemin"];
 
+        // create 5 villes! Bam!
+        for ($i = 0; $i < count($array); $i++) {
+            $indexico = new IndexIconographiques();
+            $indexico->setIndexIco($array[$i]);
+            $manager->persist($indexico);
+            $this->addReference("IndexIco".strval($i), $indexico);
+        }
         $manager->flush();
     }
 }

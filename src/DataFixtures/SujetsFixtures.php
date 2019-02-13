@@ -10,11 +10,15 @@ class SujetsFixtures extends Fixture
 {
     public function load(ObjectManager $manager)
     {
-            $sujet = new Sujets();
-            $sujet->setSujet("Eglise");
-            $manager->persist($sujet);
-            $this->addReference("sujet", $sujet);
+        $array = ["Eglise","Mosquée","Pont","Maison","Camping"];
 
+        // create 5 villes! Bam!
+        for ($i = 0; $i < count($array); $i++) {
+            $sujets = new Sujets();
+            $sujets->setSujet($array[$i]);
+            $manager->persist($sujets);
+            $this->addReference("sujet".strval($i), $sujets);
+        }
         $manager->flush();
     }
 }

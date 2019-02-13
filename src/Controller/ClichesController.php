@@ -25,41 +25,40 @@ class ClichesController extends Controller
         return $columnNames;
     }
 
-    /**
-     * @Rest\View(serializerGroups={"cliches"})
-     * @Rest\Get("/cliches")
-     * @QueryParam(name="villesin", requirements="[a-zA-Z:]+", default="", description="Index de début de la pagination") 
-     * @QueryParam(name="villesout", requirements="[a-zA-Z,]+", default="", description="Index de début de la pagination")
-     * @QueryParam(name="sujetsin", requirements="[a-zA-Z,]+", default="", description="Index de début de la pagination") 
-     * @QueryParam(name="sujetsout", requirements="[a-zA-Z,]+", default="", description="Index de début de la pagination")
-     * @QueryParam(name="hauteur", requirements="[a-zA-Z\d:]+", default="", description="Index de début de la pagination") 
-     * @QueryParam(name="largeur", requirements="[a-zA-Z\d:]+", default="", description="Index de début de la pagination")
-     * @QueryParam(name="seriesin", requirements="[a-zA-Z\d:]+", default="", description="Index de début de la pagination") 
-     * @QueryParam(name="seriesout", requirements="[a-zA-Z\d:]+", default="", description="Index de début de la pagination")
-     * @QueryParam(name="indexperin", requirements=".*", default="", description="Index de début de la pagination") 
-     * @QueryParam(name="indexperout", requirements=".*", default="", description="Index de début de la pagination")
-     * @QueryParam(name="indexicoin", requirements=".*", default="", description="Index de début de la pagination") 
-     * @QueryParam(name="indexicoout", requirements=".*", default="", description="Index de début de la pagination")
-     * @QueryParam(name="cindocin", requirements=".*", default="", description="Index de début de la pagination") 
-     * @QueryParam(name="cindocout", requirements=".*", default="", description="Index de début de la pagination")
-     * @QueryParam(name="remarquein", requirements=".*", default="", description="Index de début de la pagination")
-     * @QueryParam(name="remarqueout", requirements=".*", default="", description="Index de début de la pagination")
-     * @QueryParam(name="basdepagein", requirements=".*", default="", description="Index de début de la pagination")
-     * @QueryParam(name="basdepageout", requirements=".*", default="", description="Index de début de la pagination")
-     * @QueryParam(name="nbcliche", requirements="\d+", default="", description="Index de début de la pagination")
-     * @QueryParam(name="discriminantin", requirements=".*", default="", description="Index de début de la pagination")
-     * @QueryParam(name="discriminantout", requirements=".*", default="", description="Index de début de la pagination")
-     * @QueryParam(name="chromain", requirements=".*", default="", description="Index de début de la pagination")
-     * @QueryParam(name="chromaout", requirements=".*", default="", description="Index de début de la pagination")
-     * @QueryParam(name="supportin", requirements=".*", default="", description="Index de début de la pagination")
-     * @QueryParam(name="supportout", requirements=".*", default="", description="Index de début de la pagination")
-     * @QueryParam(name="datedeprise", requirements=".*", default="", description="Index de début de la pagination")
-     * @QueryParam(name="descriptionin", requirements=".*", default="", description="Index de début de la pagination")
-     * @QueryParam(name="descriptionout", requirements=".*", default="", description="Index de début de la pagination")
+        /**
+         * @Rest\View(serializerGroups={"cliches"})
+         * @Rest\Get("/cliches")
+         * @QueryParam(name="villesin", requirements=".*", default="", description="Index de début de la pagination") 
+         * @QueryParam(name="villesout", requirements=".*", default="", description="Index de début de la pagination")
+         * @QueryParam(name="sujetsin", requirements=".*", default="", description="Index de début de la pagination") 
+         * @QueryParam(name="sujetsout", requirements=".*", default="", description="Index de début de la pagination")
+         * @QueryParam(name="hauteur", requirements=".*", default="", description="Index de début de la pagination") 
+         * @QueryParam(name="largeur", requirements=".*", default="", description="Index de début de la pagination")
+         * @QueryParam(name="seriesin", requirements=".*", default="", description="Index de début de la pagination") 
+         * @QueryParam(name="seriesout", requirements=".*", default="", description="Index de début de la pagination")
+         * @QueryParam(name="indexperin", requirements=".*", default="", description="Index de début de la pagination") 
+         * @QueryParam(name="indexperout", requirements=".*", default="", description="Index de début de la pagination")
+         * @QueryParam(name="indexicoin", requirements=".*", default="", description="Index de début de la pagination") 
+         * @QueryParam(name="indexicoout", requirements=".*", default="", description="Index de début de la pagination")
+         * @QueryParam(name="cindocin", requirements=".*", default="", description="Index de début de la pagination") 
+         * @QueryParam(name="cindocout", requirements=".*", default="", description="Index de début de la pagination")
+         * @QueryParam(name="remarquein", requirements=".*", default="", description="Index de début de la pagination")
+         * @QueryParam(name="remarqueout", requirements=".*", default="", description="Index de début de la pagination")
+         * @QueryParam(name="basdepagein", requirements=".*", default="", description="Index de début de la pagination")
+         * @QueryParam(name="basdepageout", requirements=".*", default="", description="Index de début de la pagination")
+         * @QueryParam(name="nbcliche", requirements=".*", default="", description="Index de début de la pagination")
+         * @QueryParam(name="discriminantin", requirements=".*", default="", description="Index de début de la pagination")
+         * @QueryParam(name="discriminantout", requirements=".*", default="", description="Index de début de la pagination")
+         * @QueryParam(name="chromain", requirements=".*", default="", description="Index de début de la pagination")
+         * @QueryParam(name="chromaout", requirements=".*", default="", description="Index de début de la pagination")
+         * @QueryParam(name="supportin", requirements=".*", default="", description="Index de début de la pagination")
+         * @QueryParam(name="supportout", requirements=".*", default="", description="Index de début de la pagination")
+         * @QueryParam(name="datedeprise", requirements=".*", default="", description="Index de début de la pagination")
+         * @QueryParam(name="descriptionin", requirements=".*", default="", description="Index de début de la pagination")
+         * @QueryParam(name="descriptionout", requirements=".*", default="", description="Index de début de la pagination")
      */
     public function getClichesAction(ParamFetcher $paramFetcher,Request $request)
     {
-        //var_dump($paramFetcher->get('indexperin'));
         $cliches = $this->getDoctrine()->getEntityManager()
                  ->getRepository(Cliches::class)
                 ->findAllByParam($paramFetcher);
@@ -102,6 +101,10 @@ class ClichesController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getEntityManager();
+            foreach ($cliche->getVilles() as $ville) {
+                $ville->addClich($cliche);
+                $cliche->addVille($ville);
+            }
             $em->persist($cliche);
             $em->flush();
             return $cliche;

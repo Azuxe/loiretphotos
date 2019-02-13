@@ -23,14 +23,15 @@ class ClichesRepository extends ServiceEntityRepository
 
     public function findAllByParam($array){
         $qb = $this->createQueryBuilder('c');
-        $qb->innerJoin('c.villes', 'villes');
-        $qb->innerJoin('c.sujets', 'sujets');
-        $qb->innerJoin('c.taille','tailles');
-        $qb->innerJoin('c.serie', 'series');
-        $qb->innerJoin('c.indexPersonnes', 'indexpersonnes');
-        $qb->innerJoin('c.indexIconographiques', 'indexiconographiques');
-        $qb->innerJoin('c.cindoc', 'cindoc');
-             
+
+        if(!empty($array->get('villesin')) || !empty($array->get('villesout'))) $qb->innerJoin('c.villes', 'villes');
+        if(!empty($array->get('sujetsin')) || !empty($array->get('sujetsout'))) $qb->innerJoin('c.sujets', 'sujets');
+        if(!empty($array->get('hauteur')) || !empty($array->get('largeur')))    $qb->innerJoin('c.taille','tailles');
+        if(!empty($array->get('seriesin')) || !empty($array->get('seriesout'))) $qb->innerJoin('c.serie', 'series');
+        if(!empty($array->get('indexicoin')) || !empty($array->get('indexicoout'))) $qb->innerJoin('c.indexIconographiques', 'indexiconographiques');
+        if(!empty($array->get('indexperin')) || !empty($array->get('indexperout'))) $qb->innerJoin('c.indexPersonnes', 'indexpersonnes');
+        if(!empty($array->get('cindocin')) || !empty($array->get('cindocout')))     $qb->innerJoin('c.cindoc', 'cindoc');
+  
         if(!empty($array->get('villesin'))){
             $villes = explode(':',$array->get('villesin'));
             $qb->andWhere($qb->expr()->in('villes.nom', $villes));
@@ -168,22 +169,22 @@ class ClichesRepository extends ServiceEntityRepository
             $operateur = array_shift($nbcliche);
             switch ($operateur) {
                 case 'lt':
-                    $qb->andwhere($qb->expr()->lt('c.nbCliche', $nbcliche[0]));
+                    $qb->andwhere($qb->expr()->lt('c.nb_Cliche', $nbcliche[0]));
                 break;
                 case 'lte':
-                    $qb->andwhere($qb->expr()->lte('c.nbCliche', $nbcliche[0]));
+                    $qb->andwhere($qb->expr()->lte('c.nb_Cliche', $nbcliche[0]));
                     break;
                 case 'gt':
-                    $qb->andwhere($qb->expr()->gt('c.nbCliche', $nbcliche[0]));
+                    $qb->andwhere($qb->expr()->gt('c.nb_Cliche', $nbcliche[0]));
                     break;
                 case 'gte':
-                    $qb->andwhere($qb->expr()->gte('c.nbCliche', $nbcliche[0]));
+                    $qb->andwhere($qb->expr()->gte('c.nb_Cliche', $nbcliche[0]));
                     break;
                 case 'eq':
-                    $qb->andwhere($qb->expr()->eq('c.nbCliche', $nbcliche[0]));
+                    $qb->andwhere($qb->expr()->eq('c.nb_Cliche', $nbcliche[0]));
                     break;
                 default:
-                    $qb->andwhere($qb->expr()->eq('c.nbCliche', $nbcliche[0]));
+                    $qb->andwhere($qb->expr()->eq('c.nb_Cliche', $nbcliche[0]));
                     break;
             }
         }

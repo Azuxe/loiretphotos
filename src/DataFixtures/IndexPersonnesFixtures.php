@@ -10,11 +10,15 @@ class IndexPersonnesFixtures extends Fixture
 {
     public function load(ObjectManager $manager)
     {
-        $index = new indexPersonnes();
-        $index->setIndexPersonne("Napoleon");
-        $manager->persist($index);
-        $this->addReference("IndexPer", $index);
+        $array = ["Napoleon","Madiran","Macron","Johnny","Marc"];
 
+        // create 5 villes! Bam!
+        for ($i = 0; $i < count($array); $i++) {
+            $indexper = new IndexPersonnes();
+            $indexper->setIndexPersonne($array[$i]);
+            $manager->persist($indexper);
+            $this->addReference("IndexPer".strval($i), $indexper);
+        }
         $manager->flush();
     }
 }

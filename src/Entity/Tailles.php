@@ -5,6 +5,8 @@ namespace App\Entity;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\TaillesRepository")
@@ -13,6 +15,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 class Tailles
 {
     /**
+     * @Groups({"villes","tailles","sujets","series","indexpers","indexicos","cindoc", "cliches"})
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -20,16 +23,19 @@ class Tailles
     private $id;
 
     /**
+     * @Groups({"villes","tailles","sujets","series","indexpers","indexicos","cindoc", "cliches"})
      * @ORM\Column(type="float", nullable=false)
      */
     private $hauteur_cm;
 
     /**
+     * @Groups({"villes","tailles","sujets","series","indexpers","indexicos","cindoc", "cliches"})
      * @ORM\Column(type="float", nullable=false)
      */
     private $largeur_cm;
 
     /**
+     * @Groups({"tailles"})
      * Une taille a de 0 à N clichés
      * @ORM\OneToMany(targetEntity="App\Entity\Cliches", mappedBy="taille")
      */

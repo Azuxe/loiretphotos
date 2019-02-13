@@ -5,102 +5,145 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use FOS\RestBundle\Controller\Annotations\QueryParam;
+use FOS\RestBundle\Request\ParamFetcher;
 use FOS\RestBundle\Controller\Annotations as Rest; // alias pour toutes les annotations
 use FOS\RestBundle\View\ViewHandler;
 use FOS\RestBundle\View\View; // Utilisation de la vue de FOSRestBundle
-use App\Entity\Villes;
-use App\Form\VillesType;
-class VillesController extends Controller
+use App\Entity\Cliches;
+use App\Form\ClichesType;
+class ClichesController extends Controller
 {
 
     /**
-     * @Rest\View(serializerGroups={"villes"})
-     * @Rest\Get("/villes")
+     * @Rest\Get("/cliches/columns")
      */
-    public function getVillesAction(Request $request)
+    public function getClichesColumnAction(Request $request)
     {
-        $villes = $this->getDoctrine()->getEntityManager()
-                ->getRepository(Villes::class)
-                ->findAll();
-        /* @var $villes ville[] */
-
-        return $villes;
+        $columnNames = $this->getDoctrine()->getEntityManager()
+                 ->getClassMetadata(Cliches::class)->getColumnNames();
+        return $columnNames;
     }
 
     /**
-     * @Rest\View(serializerGroups={"villes"})
-     * @Rest\Get("/villes/{id}")
+     * @Rest\View(serializerGroups={"cliches"})
+     * @Rest\Get("/cliches")
+     * @QueryParam(name="villesin", requirements="[a-zA-Z:]+", default="", description="Index de début de la pagination") 
+     * @QueryParam(name="villesout", requirements="[a-zA-Z,]+", default="", description="Index de début de la pagination")
+     * @QueryParam(name="sujetsin", requirements="[a-zA-Z,]+", default="", description="Index de début de la pagination") 
+     * @QueryParam(name="sujetsout", requirements="[a-zA-Z,]+", default="", description="Index de début de la pagination")
+     * @QueryParam(name="hauteur", requirements="[a-zA-Z\d:]+", default="", description="Index de début de la pagination") 
+     * @QueryParam(name="largeur", requirements="[a-zA-Z\d:]+", default="", description="Index de début de la pagination")
+     * @QueryParam(name="seriesin", requirements="[a-zA-Z\d:]+", default="", description="Index de début de la pagination") 
+     * @QueryParam(name="seriesout", requirements="[a-zA-Z\d:]+", default="", description="Index de début de la pagination")
+     * @QueryParam(name="indexperin", requirements=".*", default="", description="Index de début de la pagination") 
+     * @QueryParam(name="indexperout", requirements=".*", default="", description="Index de début de la pagination")
+     * @QueryParam(name="indexicoin", requirements=".*", default="", description="Index de début de la pagination") 
+     * @QueryParam(name="indexicoout", requirements=".*", default="", description="Index de début de la pagination")
+     * @QueryParam(name="cindocin", requirements=".*", default="", description="Index de début de la pagination") 
+     * @QueryParam(name="cindocout", requirements=".*", default="", description="Index de début de la pagination")
+     * @QueryParam(name="remarquein", requirements=".*", default="", description="Index de début de la pagination")
+     * @QueryParam(name="remarqueout", requirements=".*", default="", description="Index de début de la pagination")
+     * @QueryParam(name="basdepagein", requirements=".*", default="", description="Index de début de la pagination")
+     * @QueryParam(name="basdepageout", requirements=".*", default="", description="Index de début de la pagination")
+     * @QueryParam(name="nbcliche", requirements="\d+", default="", description="Index de début de la pagination")
+     * @QueryParam(name="discriminantin", requirements=".*", default="", description="Index de début de la pagination")
+     * @QueryParam(name="discriminantout", requirements=".*", default="", description="Index de début de la pagination")
+     * @QueryParam(name="chromain", requirements=".*", default="", description="Index de début de la pagination")
+     * @QueryParam(name="chromaout", requirements=".*", default="", description="Index de début de la pagination")
+     * @QueryParam(name="supportin", requirements=".*", default="", description="Index de début de la pagination")
+     * @QueryParam(name="supportout", requirements=".*", default="", description="Index de début de la pagination")
+     * @QueryParam(name="datedeprise", requirements=".*", default="", description="Index de début de la pagination")
+     * @QueryParam(name="descriptionin", requirements=".*", default="", description="Index de début de la pagination")
+     * @QueryParam(name="descriptionout", requirements=".*", default="", description="Index de début de la pagination")
      */
-    public function getVilleAction($id,Request $request)
+    public function getClichesAction(ParamFetcher $paramFetcher,Request $request)
     {
-        $ville = $this->getDoctrine()->getEntityManager()
-                ->getRepository(Villes::class)
-                ->find($id);
-        /* @var $ville ville */
+        //var_dump($paramFetcher->get('indexperin'));
+        $cliches = $this->getDoctrine()->getEntityManager()
+                 ->getRepository(Cliches::class)
+                ->findAllByParam($paramFetcher);
+        /* @var $cliches cliche[] */
 
-        if (empty($ville)) {
-            return \FOS\RestBundle\View\View::create(['message' => 'Villes not found'], Response::HTTP_NOT_FOUND);
+        //$cliches = $qb->getQuery()->getResult();
+
+        return $cliches;
+    }
+
+    /**
+     * @Rest\View(serializerGroups={"cliches"})
+     * @Rest\Get("/cliches/{id}")
+     */
+    public function getClicheAction($id,Request $request)
+    {
+        $cliche = $this->getDoctrine()->getEntityManager()
+                ->getRepository(Cliches::class)
+                ->find($id);
+        /* @var $cliche cliche */
+
+        if (empty($cliche)) {
+            return \FOS\RestBundle\View\View::create(['message' => 'Cliches not found'], Response::HTTP_NOT_FOUND);
         }
 
-        return $ville;
+        return $cliche;
   
     }
 
     /**
-     * @Rest\View(statusCode=Response::HTTP_CREATED,serializerGroups={"villes"})
-     * @Rest\Post("/villes")
+     * @Rest\View(statusCode=Response::HTTP_CREATED,serializerGroups={"cliches"})
+     * @Rest\Post("/cliches")
      */
-    public function postVilleAction(Request $request)
+    public function postClicheAction(Request $request)
     {
-        $ville = new Villes();
-        $form = $this->createForm(VillesType::class, $ville);
+        $cliche = new Cliches();
+        $form = $this->createForm(ClichesType::class, $cliche);
 
         $form->submit($request->request->all());
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getEntityManager();
-            $em->persist($ville);
+            $em->persist($cliche);
             $em->flush();
-            return $ville;
+            return $cliche;
         } else {
             return $form;
         }
     }
 
      /**
-     * @Rest\View(statusCode=Response::HTTP_NO_CONTENT,serializerGroups={"villes"})
-     * @Rest\Delete("/villes/{id}")
+     * @Rest\View(statusCode=Response::HTTP_NO_CONTENT,serializerGroups={"cliches"})
+     * @Rest\Delete("/cliches/{id}")
      */
-    public function removeVilleAction(Request $request)
+    public function removeClicheAction(Request $request)
     {
         $em = $this->getDoctrine()->getEntityManager();
-        $ville = $em->getRepository(Villes::class)
+        $cliche = $em->getRepository(Cliches::class)
                     ->find($request->get('id'));
-        /* @var $ville ville */
+        /* @var $cliche cliche */
 
-        if ($ville){
-            $em->remove($ville);
+        if ($cliche){
+            $em->remove($cliche);
             $em->flush();
         }
         
     }
 
     /**
-     * @Rest\View(serializerGroups={"villes"})
-     * @Rest\Put("/villes/{id}")
+     * @Rest\View(serializerGroups={"cliches"})
+     * @Rest\Put("/cliches/{id}")
      */
-    public function updateVilleAction(Request $request)
+    public function updateClicheAction(Request $request)
     {
-        $ville = $this->getDoctrine()->getEntityManager()
-                ->getRepository(Villes::class)
+        $cliche = $this->getDoctrine()->getEntityManager()
+                ->getRepository(Cliches::class)
                 ->find($request->get('id')); // L'identifiant en tant que paramètre n'est plus nécessaire
-        /* @var $ville ville */
+        /* @var $cliche cliche */
 
-        if (empty($ville)) {
-            return \FOS\RestBundle\View\View::create(['message' => 'Villes not found'], Response::HTTP_NOT_FOUND);
+        if (empty($cliche)) {
+            return \FOS\RestBundle\View\View::create(['message' => 'Cliches not found'], Response::HTTP_NOT_FOUND);
         }
 
-        $form = $this->createForm(VillesType::class, $ville);
+        $form = $this->createForm(ClichesType::class, $cliche);
 
         $form->submit($request->request->all());
 
@@ -108,30 +151,30 @@ class VillesController extends Controller
             $em = $this->getDoctrine()->getEntityManager();
             // l'entité vient de la base, donc le merge n'est pas nécessaire.
             // il est utilisé juste par soucis de clarté
-            $em->merge($ville);
+            $em->merge($cliche);
             $em->flush();
-            return $ville;
+            return $cliche;
         } else {
             return $form;
         }
     }
 
     /**
-     * @Rest\View(serializerGroups={"villes"})
-     * @Rest\Patch("/villes/{id}")
+     * @Rest\View(serializerGroups={"cliches"})
+     * @Rest\Patch("/cliches/{id}")
      */
-    public function patchVilleAction(Request $request)
+    public function patchClicheAction(Request $request)
     {
-        $ville = $this->getDoctrine()->getEntityManager()
-                ->getRepository(Villes::class)
+        $cliche = $this->getDoctrine()->getEntityManager()
+                ->getRepository(Cliches::class)
                 ->find($request->get('id')); // L'identifiant en tant que paramètre n'est plus nécessaire
-        /* @var $ville Villes */
+        /* @var $cliche Cliches */
 
-        if (empty($ville)) {
-            return \FOS\RestBundle\View\View::create(['message' => 'Villes not found'], Response::HTTP_NOT_FOUND);
+        if (empty($cliche)) {
+            return \FOS\RestBundle\View\View::create(['message' => 'Cliches not found'], Response::HTTP_NOT_FOUND);
         }
 
-        $form = $this->createForm(VillesType::class, $ville);
+        $form = $this->createForm(ClichesType::class, $cliche);
 
          // Le paramètre false dit à Symfony de garder les valeurs dans notre 
          // entité si l'utilisateur n'en fournit pas une dans sa requête
@@ -141,9 +184,9 @@ class VillesController extends Controller
             $em = $this->getDoctrine()->getEntityManager();
             // l'entité vient de la base, donc le merge n'est pas nécessaire.
             // il est utilisé juste par soucis de clarté
-            $em->merge($ville);
+            $em->merge($cliche);
             $em->flush();
-            return $ville;
+            return $cliche;
         } else {
             return $form;
         }

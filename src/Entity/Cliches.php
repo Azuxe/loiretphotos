@@ -15,7 +15,7 @@ class Cliches
 {
 
     /**
-     * @Groups({"villes", "cliches"})
+     * @Groups({"villes","tailles","sujets","series","indexpers","indexicos","cindoc", "cliches"})
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -23,61 +23,69 @@ class Cliches
     private $id;
 
     /**
-     * @Groups({"cliches"})
+     * @Groups({"tailles","sujets","series","indexpers","indexicos","cindoc", "cliches"})
      * Des clichés ont plusieurs villes
      * @ORM\ManyToMany(targetEntity="App\Entity\Villes", mappedBy="cliches", cascade={"persist"})
      */
     private $villes;
 
     /**
-     * @Groups({"villes", "cliches"})
+     * @Groups({"villes","tailles","sujets","series","indexpers","indexicos","cindoc", "cliches"})
      * @ORM\Column(type="text", nullable=true)
      */
     private $description;
 
     /**
-     * @Groups({"villes", "cliches"})
+     * @Groups({"villes","tailles","sujets","series","indexpers","indexicos","cindoc", "cliches"})
+     * 
      * @ORM\Column(type="date", nullable=true)
      */
     private $date_de_prise;
 
     /**
-     * @Groups({"villes", "cliches"})
+     * @Groups({"villes","tailles","sujets","series","indexpers","indexicos","cindoc", "cliches"})
+     * 
      * @ORM\Column(type="text", nullable=true)
      */
     private $fichier;
 
     /**
-     * @Groups({"villes", "cliches"})
+     * @Groups({"villes","tailles","sujets","series","indexpers","indexicos","cindoc", "cliches"})
+     * 
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $support;
 
     /**
-     * @Groups({"villes", "cliches"})
+     * @Groups({"villes","tailles","sujets","series","indexpers","indexicos","cindoc", "cliches"})
+     * 
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $chroma;
 
     /**
-     * @Groups({"villes", "cliches"})
+     * @Groups({"villes","tailles","sujets","series","indexpers","indexicos","cindoc", "cliches"})
+     * 
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $discriminant;
 
     /**
-     * @Groups({"villes", "cliches"})
+     * @Groups({"villes","tailles","sujets","series","indexpers","indexicos","cindoc", "cliches"})
+     * 
      * @ORM\Column(type="integer", nullable=false)
      */
     private $nb_Cliche;
 
     /**
-     * @Groups({"villes", "cliches"})
+     * @Groups({"villes","tailles","sujets","series","indexpers","indexicos","cindoc", "cliches"})
+     * 
      * @ORM\Column(type="text", nullable=true)
      */
     private $note_de_bas_De_Page;
 
     /**
+     * @Groups({"villes","sujets","series","indexpers","indexicos","cindoc", "cliches"})
      * Un cliché a de 0 à 1 taille
      * @ORM\ManyToOne(targetEntity="App\Entity\Tailles", inversedBy="cliches",cascade={"persist"})
      * @ORM\JoinColumn(name="tailles", referencedColumnName="id")
@@ -85,12 +93,14 @@ class Cliches
     private $taille;
 
     /**
+     * @Groups({"villes","tailles","series","indexpers","indexicos","cindoc", "cliches"})
      * Un cliché a de 0 à N sujets
      * @ORM\ManyToMany(targetEntity="App\Entity\Sujets", mappedBy="cliches",cascade={"persist"})
      */
     private $sujets;
 
     /**
+     * @Groups({"villes","tailles","sujets","indexpers","indexicos","cindoc", "cliches"})
      * Un cliché à de 0 à une série
      * @ORM\ManyToOne(targetEntity="App\Entity\Series", inversedBy="cliches",cascade={"persist"})
      * @ORM\JoinColumn(name="series", referencedColumnName="id")
@@ -98,24 +108,27 @@ class Cliches
     private $serie;
 
     /**
+     * @Groups({"villes","tailles","sujets","series","indexicos","cindoc", "cliches"})
      * Un cliché à de 0 à N index personnes
      * @ORM\ManyToMany(targetEntity="App\Entity\IndexPersonnes", mappedBy="cliches",cascade={"persist"})
      */
     private $indexPersonnes;
 
     /**
+     * @Groups({"villes","tailles","sujets","series","indexpers","cindoc", "cliches"})
      * Un cliché à de 0 à N index iconographiques
      * @ORM\ManyToMany(targetEntity="App\Entity\IndexIconographiques", mappedBy="cliches",cascade={"persist"})
      */
     private $indexIconographiques;
 
     /**
-     * @Groups({"villes", "cliches"})
+     * 
      * @ORM\Column(type="text", nullable=true)
      */
     private $remarque;
 
     /**
+     * @Groups({"villes","tailles","sujets","series","indexpers","indexicos", "cliches"})
      * Un cliché à de 0 à N cindoc
      * @ORM\ManyToMany(targetEntity="App\Entity\Cindoc", mappedBy="cliches",cascade={"persist"})
      */

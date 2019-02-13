@@ -8,99 +8,99 @@ use Symfony\Component\HttpFoundation\Response;
 use FOS\RestBundle\Controller\Annotations as Rest; // alias pour toutes les annotations
 use FOS\RestBundle\View\ViewHandler;
 use FOS\RestBundle\View\View; // Utilisation de la vue de FOSRestBundle
-use App\Entity\Villes;
-use App\Form\VillesType;
-class VillesController extends Controller
+use App\Entity\IndexPersonnes;
+use App\Form\IndexPersonnesType;
+class IndexPersonnesController extends Controller
 {
 
     /**
-     * @Rest\View(serializerGroups={"villes"})
-     * @Rest\Get("/villes")
+     * @Rest\View(serializerGroups={"indexpers"})
+     * @Rest\Get("/indexPersonnes")
      */
-    public function getVillesAction(Request $request)
+    public function getIndexPersonnesAction(Request $request)
     {
-        $villes = $this->getDoctrine()->getEntityManager()
-                ->getRepository(Villes::class)
+        $indexPersonnes = $this->getDoctrine()->getEntityManager()
+                ->getRepository(IndexPersonnes::class)
                 ->findAll();
-        /* @var $villes ville[] */
+        /* @var $indexPersonnes indexPersonne[] */
 
-        return $villes;
+        return $indexPersonnes;
     }
 
     /**
-     * @Rest\View(serializerGroups={"villes"})
-     * @Rest\Get("/villes/{id}")
+     * @Rest\View(serializerGroups={"indexpers"})
+     * @Rest\Get("/indexPersonnes/{id}")
      */
-    public function getVilleAction($id,Request $request)
+    public function getIndexPersonneAction($id,Request $request)
     {
-        $ville = $this->getDoctrine()->getEntityManager()
-                ->getRepository(Villes::class)
+        $indexPersonne = $this->getDoctrine()->getEntityManager()
+                ->getRepository(IndexPersonnes::class)
                 ->find($id);
-        /* @var $ville ville */
+        /* @var $indexPersonne indexPersonne */
 
-        if (empty($ville)) {
-            return \FOS\RestBundle\View\View::create(['message' => 'Villes not found'], Response::HTTP_NOT_FOUND);
+        if (empty($indexPersonne)) {
+            return \FOS\RestBundle\View\View::create(['message' => 'IndexPersonnes not found'], Response::HTTP_NOT_FOUND);
         }
 
-        return $ville;
+        return $indexPersonne;
   
     }
 
     /**
-     * @Rest\View(statusCode=Response::HTTP_CREATED,serializerGroups={"villes"})
-     * @Rest\Post("/villes")
+     * @Rest\View(statusCode=Response::HTTP_CREATED,serializerGroups={"indexpers"})
+     * @Rest\Post("/indexPersonnes")
      */
-    public function postVilleAction(Request $request)
+    public function postIndexPersonneAction(Request $request)
     {
-        $ville = new Villes();
-        $form = $this->createForm(VillesType::class, $ville);
+        $indexPersonne = new IndexPersonnes();
+        $form = $this->createForm(IndexPersonnesType::class, $indexPersonne);
 
         $form->submit($request->request->all());
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getEntityManager();
-            $em->persist($ville);
+            $em->persist($indexPersonne);
             $em->flush();
-            return $ville;
+            return $indexPersonne;
         } else {
             return $form;
         }
     }
 
      /**
-     * @Rest\View(statusCode=Response::HTTP_NO_CONTENT,serializerGroups={"villes"})
-     * @Rest\Delete("/villes/{id}")
+     * @Rest\View(statusCode=Response::HTTP_NO_CONTENT,serializerGroups={"indexpers"})
+     * @Rest\Delete("/indexPersonnes/{id}")
      */
-    public function removeVilleAction(Request $request)
+    public function removeIndexPersonneAction(Request $request)
     {
         $em = $this->getDoctrine()->getEntityManager();
-        $ville = $em->getRepository(Villes::class)
+        $indexPersonne = $em->getRepository(IndexPersonnes::class)
                     ->find($request->get('id'));
-        /* @var $ville ville */
+        /* @var $indexPersonne indexPersonne */
 
-        if ($ville){
-            $em->remove($ville);
+        if ($indexPersonne){
+            $em->remove($indexPersonne);
             $em->flush();
         }
         
     }
 
     /**
-     * @Rest\View(serializerGroups={"villes"})
-     * @Rest\Put("/villes/{id}")
+     * @Rest\View(serializerGroups={"indexpers"})
+     * @Rest\Put("/indexPersonnes/{id}")
      */
-    public function updateVilleAction(Request $request)
+    public function updateIndexPersonneAction(Request $request)
     {
-        $ville = $this->getDoctrine()->getEntityManager()
-                ->getRepository(Villes::class)
+        $indexPersonne = $this->getDoctrine()->getEntityManager()
+                ->getRepository(IndexPersonnes::class)
                 ->find($request->get('id')); // L'identifiant en tant que paramètre n'est plus nécessaire
-        /* @var $ville ville */
+        /* @var $indexPersonne indexPersonne */
 
-        if (empty($ville)) {
-            return \FOS\RestBundle\View\View::create(['message' => 'Villes not found'], Response::HTTP_NOT_FOUND);
+        if (empty($indexPersonne)) {
+            return \FOS\RestBundle\View\View::create(['message' => 'IndexPersonnes not found'], Response::HTTP_NOT_FOUND);
         }
 
-        $form = $this->createForm(VillesType::class, $ville);
+        $form = $this->createForm(IndexPersonnesType::class, $indexPersonne);
 
         $form->submit($request->request->all());
 
@@ -108,30 +108,30 @@ class VillesController extends Controller
             $em = $this->getDoctrine()->getEntityManager();
             // l'entité vient de la base, donc le merge n'est pas nécessaire.
             // il est utilisé juste par soucis de clarté
-            $em->merge($ville);
+            $em->merge($indexPersonne);
             $em->flush();
-            return $ville;
+            return $indexPersonne;
         } else {
             return $form;
         }
     }
 
     /**
-     * @Rest\View(serializerGroups={"villes"})
-     * @Rest\Patch("/villes/{id}")
+     * @Rest\View(serializerGroups={"indexpers"})
+     * @Rest\Patch("/indexPersonnes/{id}")
      */
-    public function patchVilleAction(Request $request)
+    public function patchIndexPersonneAction(Request $request)
     {
-        $ville = $this->getDoctrine()->getEntityManager()
-                ->getRepository(Villes::class)
+        $indexPersonne = $this->getDoctrine()->getEntityManager()
+                ->getRepository(IndexPersonnes::class)
                 ->find($request->get('id')); // L'identifiant en tant que paramètre n'est plus nécessaire
-        /* @var $ville Villes */
+        /* @var $indexPersonne IndexPersonnes */
 
-        if (empty($ville)) {
-            return \FOS\RestBundle\View\View::create(['message' => 'Villes not found'], Response::HTTP_NOT_FOUND);
+        if (empty($indexPersonne)) {
+            return \FOS\RestBundle\View\View::create(['message' => 'IndexPersonnes not found'], Response::HTTP_NOT_FOUND);
         }
 
-        $form = $this->createForm(VillesType::class, $ville);
+        $form = $this->createForm(IndexPersonnesType::class, $indexPersonne);
 
          // Le paramètre false dit à Symfony de garder les valeurs dans notre 
          // entité si l'utilisateur n'en fournit pas une dans sa requête
@@ -141,9 +141,9 @@ class VillesController extends Controller
             $em = $this->getDoctrine()->getEntityManager();
             // l'entité vient de la base, donc le merge n'est pas nécessaire.
             // il est utilisé juste par soucis de clarté
-            $em->merge($ville);
+            $em->merge($indexPersonne);
             $em->flush();
-            return $ville;
+            return $indexPersonne;
         } else {
             return $form;
         }

@@ -5,6 +5,8 @@ namespace App\Entity;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CindocRepository")
@@ -12,6 +14,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 class Cindoc
 {
     /**
+     * @Groups({"villes","tailles","sujets","series","indexpers","indexicos","cindoc", "cliches"})
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -19,13 +22,15 @@ class Cindoc
     private $id;
 
     /**
+     * @Groups({"villes","tailles","sujets","series","indexpers","indexicos","cindoc", "cliches"})
      * @ORM\Column(type="string",length=255)
      */
     private $cindoc;
 
     /**
+     * @Groups({"cindoc"})
      * Un cindoc a de 0 à N cliches
-     * @ORM\ManyToMany(targetEntity="App\Entity\Cliches", inversedBy="cindocs")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Cliches", inversedBy="cindoc")
      * @ORM\JoinTable(name="cindocs_cliches")
      */
     private $cliches;

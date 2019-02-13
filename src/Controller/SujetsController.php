@@ -8,99 +8,99 @@ use Symfony\Component\HttpFoundation\Response;
 use FOS\RestBundle\Controller\Annotations as Rest; // alias pour toutes les annotations
 use FOS\RestBundle\View\ViewHandler;
 use FOS\RestBundle\View\View; // Utilisation de la vue de FOSRestBundle
-use App\Entity\Villes;
-use App\Form\VillesType;
-class VillesController extends Controller
+use App\Entity\Sujets;
+use App\Form\SujetsType;
+class SujetsController extends Controller
 {
 
     /**
-     * @Rest\View(serializerGroups={"villes"})
-     * @Rest\Get("/villes")
+     * @Rest\View(serializerGroups={"sujets"})
+     * @Rest\Get("/sujets")
      */
-    public function getVillesAction(Request $request)
+    public function getSujetsAction(Request $request)
     {
-        $villes = $this->getDoctrine()->getEntityManager()
-                ->getRepository(Villes::class)
+        $sujets = $this->getDoctrine()->getEntityManager()
+                ->getRepository(Sujets::class)
                 ->findAll();
-        /* @var $villes ville[] */
+        /* @var $sujets sujet[] */
 
-        return $villes;
+        return $sujets;
     }
 
     /**
-     * @Rest\View(serializerGroups={"villes"})
-     * @Rest\Get("/villes/{id}")
+     * @Rest\View(serializerGroups={"sujets"})
+     * @Rest\Get("/sujets/{id}")
      */
-    public function getVilleAction($id,Request $request)
+    public function getSujetAction($id,Request $request)
     {
-        $ville = $this->getDoctrine()->getEntityManager()
-                ->getRepository(Villes::class)
+        $sujet = $this->getDoctrine()->getEntityManager()
+                ->getRepository(Sujets::class)
                 ->find($id);
-        /* @var $ville ville */
+        /* @var $sujet sujet */
 
-        if (empty($ville)) {
-            return \FOS\RestBundle\View\View::create(['message' => 'Villes not found'], Response::HTTP_NOT_FOUND);
+        if (empty($sujet)) {
+            return \FOS\RestBundle\View\View::create(['message' => 'Sujets not found'], Response::HTTP_NOT_FOUND);
         }
 
-        return $ville;
+        return $sujet;
   
     }
 
     /**
-     * @Rest\View(statusCode=Response::HTTP_CREATED,serializerGroups={"villes"})
-     * @Rest\Post("/villes")
+     * @Rest\View(statusCode=Response::HTTP_CREATED,serializerGroups={"sujets"})
+     * @Rest\Post("/sujets")
      */
-    public function postVilleAction(Request $request)
+    public function postSujetAction(Request $request)
     {
-        $ville = new Villes();
-        $form = $this->createForm(VillesType::class, $ville);
+        $sujet = new Sujets();
+        $form = $this->createForm(SujetsType::class, $sujet);
 
         $form->submit($request->request->all());
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getEntityManager();
-            $em->persist($ville);
+            $em->persist($sujet);
             $em->flush();
-            return $ville;
+            return $sujet;
         } else {
             return $form;
         }
     }
 
      /**
-     * @Rest\View(statusCode=Response::HTTP_NO_CONTENT,serializerGroups={"villes"})
-     * @Rest\Delete("/villes/{id}")
+     * @Rest\View(statusCode=Response::HTTP_NO_CONTENT,serializerGroups={"sujets"})
+     * @Rest\Delete("/sujets/{id}")
      */
-    public function removeVilleAction(Request $request)
+    public function removeSujetAction(Request $request)
     {
         $em = $this->getDoctrine()->getEntityManager();
-        $ville = $em->getRepository(Villes::class)
+        $sujet = $em->getRepository(Sujets::class)
                     ->find($request->get('id'));
-        /* @var $ville ville */
+        /* @var $sujet sujet */
 
-        if ($ville){
-            $em->remove($ville);
+        if ($sujet){
+            $em->remove($sujet);
             $em->flush();
         }
         
     }
 
     /**
-     * @Rest\View(serializerGroups={"villes"})
-     * @Rest\Put("/villes/{id}")
+     * @Rest\View(serializerGroups={"sujets"})
+     * @Rest\Put("/sujets/{id}")
      */
-    public function updateVilleAction(Request $request)
+    public function updateSujetAction(Request $request)
     {
-        $ville = $this->getDoctrine()->getEntityManager()
-                ->getRepository(Villes::class)
+        $sujet = $this->getDoctrine()->getEntityManager()
+                ->getRepository(Sujets::class)
                 ->find($request->get('id')); // L'identifiant en tant que paramètre n'est plus nécessaire
-        /* @var $ville ville */
+        /* @var $sujet sujet */
 
-        if (empty($ville)) {
-            return \FOS\RestBundle\View\View::create(['message' => 'Villes not found'], Response::HTTP_NOT_FOUND);
+        if (empty($sujet)) {
+            return \FOS\RestBundle\View\View::create(['message' => 'Sujets not found'], Response::HTTP_NOT_FOUND);
         }
 
-        $form = $this->createForm(VillesType::class, $ville);
+        $form = $this->createForm(SujetsType::class, $sujet);
 
         $form->submit($request->request->all());
 
@@ -108,30 +108,30 @@ class VillesController extends Controller
             $em = $this->getDoctrine()->getEntityManager();
             // l'entité vient de la base, donc le merge n'est pas nécessaire.
             // il est utilisé juste par soucis de clarté
-            $em->merge($ville);
+            $em->merge($sujet);
             $em->flush();
-            return $ville;
+            return $sujet;
         } else {
             return $form;
         }
     }
 
     /**
-     * @Rest\View(serializerGroups={"villes"})
-     * @Rest\Patch("/villes/{id}")
+     * @Rest\View(serializerGroups={"sujets"})
+     * @Rest\Patch("/sujets/{id}")
      */
-    public function patchVilleAction(Request $request)
+    public function patchSujetAction(Request $request)
     {
-        $ville = $this->getDoctrine()->getEntityManager()
-                ->getRepository(Villes::class)
+        $sujet = $this->getDoctrine()->getEntityManager()
+                ->getRepository(Sujets::class)
                 ->find($request->get('id')); // L'identifiant en tant que paramètre n'est plus nécessaire
-        /* @var $ville Villes */
+        /* @var $sujet Sujets */
 
-        if (empty($ville)) {
-            return \FOS\RestBundle\View\View::create(['message' => 'Villes not found'], Response::HTTP_NOT_FOUND);
+        if (empty($sujet)) {
+            return \FOS\RestBundle\View\View::create(['message' => 'Sujets not found'], Response::HTTP_NOT_FOUND);
         }
 
-        $form = $this->createForm(VillesType::class, $ville);
+        $form = $this->createForm(SujetsType::class, $sujet);
 
          // Le paramètre false dit à Symfony de garder les valeurs dans notre 
          // entité si l'utilisateur n'en fournit pas une dans sa requête
@@ -141,9 +141,9 @@ class VillesController extends Controller
             $em = $this->getDoctrine()->getEntityManager();
             // l'entité vient de la base, donc le merge n'est pas nécessaire.
             // il est utilisé juste par soucis de clarté
-            $em->merge($ville);
+            $em->merge($sujet);
             $em->flush();
-            return $ville;
+            return $sujet;
         } else {
             return $form;
         }

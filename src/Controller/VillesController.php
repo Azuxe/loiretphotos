@@ -16,7 +16,7 @@ class VillesController extends Controller
     /**
      * @Rest\View(serializerGroups={"villes"})
      * @Rest\Get("/villes")
-     */
+    */
     public function getVillesAction(Request $request)
     {
         $villes = $this->getDoctrine()->getEntityManager()

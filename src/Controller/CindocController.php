@@ -8,99 +8,99 @@ use Symfony\Component\HttpFoundation\Response;
 use FOS\RestBundle\Controller\Annotations as Rest; // alias pour toutes les annotations
 use FOS\RestBundle\View\ViewHandler;
 use FOS\RestBundle\View\View; // Utilisation de la vue de FOSRestBundle
-use App\Entity\Villes;
-use App\Form\VillesType;
-class VillesController extends Controller
+use App\Entity\Cindoc;
+use App\Form\CindocType;
+class CindocController extends Controller
 {
 
     /**
-     * @Rest\View(serializerGroups={"villes"})
-     * @Rest\Get("/villes")
+     * @Rest\View(serializerGroups={"cindoc"})
+     * @Rest\Get("/cindocs")
      */
-    public function getVillesAction(Request $request)
+    public function getCindocsAction(Request $request)
     {
-        $villes = $this->getDoctrine()->getEntityManager()
-                ->getRepository(Villes::class)
+        $cindocs = $this->getDoctrine()->getEntityManager()
+                ->getRepository(Cindoc::class)
                 ->findAll();
-        /* @var $villes ville[] */
+        /* @var $cindocs cindoc[] */
 
-        return $villes;
+        return $cindocs;
     }
 
     /**
-     * @Rest\View(serializerGroups={"villes"})
-     * @Rest\Get("/villes/{id}")
+     * @Rest\View(serializerGroups={"cindoc"})
+     * @Rest\Get("/cindocs/{id}")
      */
-    public function getVilleAction($id,Request $request)
+    public function getCindocAction($id,Request $request)
     {
-        $ville = $this->getDoctrine()->getEntityManager()
-                ->getRepository(Villes::class)
+        $cindoc = $this->getDoctrine()->getEntityManager()
+                ->getRepository(Cindoc::class)
                 ->find($id);
-        /* @var $ville ville */
+        /* @var $cindoc cindoc */
 
-        if (empty($ville)) {
-            return \FOS\RestBundle\View\View::create(['message' => 'Villes not found'], Response::HTTP_NOT_FOUND);
+        if (empty($cindoc)) {
+            return \FOS\RestBundle\View\View::create(['message' => 'Cindoc not found'], Response::HTTP_NOT_FOUND);
         }
 
-        return $ville;
+        return $cindoc;
   
     }
 
     /**
-     * @Rest\View(statusCode=Response::HTTP_CREATED,serializerGroups={"villes"})
-     * @Rest\Post("/villes")
+     * @Rest\View(statusCode=Response::HTTP_CREATED,serializerGroups={"cindoc"})
+     * @Rest\Post("/cindocs")
      */
-    public function postVilleAction(Request $request)
+    public function postCindocAction(Request $request)
     {
-        $ville = new Villes();
-        $form = $this->createForm(VillesType::class, $ville);
+        $cindoc = new Cindoc();
+        $form = $this->createForm(CindocType::class, $cindoc);
 
         $form->submit($request->request->all());
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getEntityManager();
-            $em->persist($ville);
+            $em->persist($cindoc);
             $em->flush();
-            return $ville;
+            return $cindoc;
         } else {
             return $form;
         }
     }
 
      /**
-     * @Rest\View(statusCode=Response::HTTP_NO_CONTENT,serializerGroups={"villes"})
-     * @Rest\Delete("/villes/{id}")
+     * @Rest\View(statusCode=Response::HTTP_NO_CONTENT,serializerGroups={"cindoc"})
+     * @Rest\Delete("/cindocs/{id}")
      */
-    public function removeVilleAction(Request $request)
+    public function removeCindocAction(Request $request)
     {
         $em = $this->getDoctrine()->getEntityManager();
-        $ville = $em->getRepository(Villes::class)
+        $cindoc = $em->getRepository(Cindoc::class)
                     ->find($request->get('id'));
-        /* @var $ville ville */
+        /* @var $cindoc cindoc */
 
-        if ($ville){
-            $em->remove($ville);
+        if ($cindoc){
+            $em->remove($cindoc);
             $em->flush();
         }
         
     }
 
     /**
-     * @Rest\View(serializerGroups={"villes"})
-     * @Rest\Put("/villes/{id}")
+     * @Rest\View(serializerGroups={"cindoc"})
+     * @Rest\Put("/cindocs/{id}")
      */
-    public function updateVilleAction(Request $request)
+    public function updateCindocAction(Request $request)
     {
-        $ville = $this->getDoctrine()->getEntityManager()
-                ->getRepository(Villes::class)
+        $cindoc = $this->getDoctrine()->getEntityManager()
+                ->getRepository(Cindoc::class)
                 ->find($request->get('id')); // L'identifiant en tant que paramètre n'est plus nécessaire
-        /* @var $ville ville */
+        /* @var $cindoc cindoc */
 
-        if (empty($ville)) {
-            return \FOS\RestBundle\View\View::create(['message' => 'Villes not found'], Response::HTTP_NOT_FOUND);
+        if (empty($cindoc)) {
+            return \FOS\RestBundle\View\View::create(['message' => 'Cindoc not found'], Response::HTTP_NOT_FOUND);
         }
 
-        $form = $this->createForm(VillesType::class, $ville);
+        $form = $this->createForm(CindocType::class, $cindoc);
 
         $form->submit($request->request->all());
 
@@ -108,30 +108,30 @@ class VillesController extends Controller
             $em = $this->getDoctrine()->getEntityManager();
             // l'entité vient de la base, donc le merge n'est pas nécessaire.
             // il est utilisé juste par soucis de clarté
-            $em->merge($ville);
+            $em->merge($cindoc);
             $em->flush();
-            return $ville;
+            return $cindoc;
         } else {
             return $form;
         }
     }
 
     /**
-     * @Rest\View(serializerGroups={"villes"})
-     * @Rest\Patch("/villes/{id}")
+     * @Rest\View(serializerGroups={"cindoc"})
+     * @Rest\Patch("/cindocs/{id}")
      */
-    public function patchVilleAction(Request $request)
+    public function patchCindocAction(Request $request)
     {
-        $ville = $this->getDoctrine()->getEntityManager()
-                ->getRepository(Villes::class)
+        $cindoc = $this->getDoctrine()->getEntityManager()
+                ->getRepository(Cindoc::class)
                 ->find($request->get('id')); // L'identifiant en tant que paramètre n'est plus nécessaire
-        /* @var $ville Villes */
+        /* @var $cindoc Cindoc */
 
-        if (empty($ville)) {
-            return \FOS\RestBundle\View\View::create(['message' => 'Villes not found'], Response::HTTP_NOT_FOUND);
+        if (empty($cindoc)) {
+            return \FOS\RestBundle\View\View::create(['message' => 'Cindoc not found'], Response::HTTP_NOT_FOUND);
         }
 
-        $form = $this->createForm(VillesType::class, $ville);
+        $form = $this->createForm(CindocType::class, $cindoc);
 
          // Le paramètre false dit à Symfony de garder les valeurs dans notre 
          // entité si l'utilisateur n'en fournit pas une dans sa requête
@@ -141,9 +141,9 @@ class VillesController extends Controller
             $em = $this->getDoctrine()->getEntityManager();
             // l'entité vient de la base, donc le merge n'est pas nécessaire.
             // il est utilisé juste par soucis de clarté
-            $em->merge($ville);
+            $em->merge($cindoc);
             $em->flush();
-            return $ville;
+            return $cindoc;
         } else {
             return $form;
         }

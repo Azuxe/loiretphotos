@@ -8,99 +8,99 @@ use Symfony\Component\HttpFoundation\Response;
 use FOS\RestBundle\Controller\Annotations as Rest; // alias pour toutes les annotations
 use FOS\RestBundle\View\ViewHandler;
 use FOS\RestBundle\View\View; // Utilisation de la vue de FOSRestBundle
-use App\Entity\Villes;
-use App\Form\VillesType;
-class VillesController extends Controller
+use App\Entity\IndexIconographiques;
+use App\Form\IndexIconographiquesType;
+class IndexIconographiquesController extends Controller
 {
 
     /**
-     * @Rest\View(serializerGroups={"villes"})
-     * @Rest\Get("/villes")
+     * @Rest\View(serializerGroups={"indexicos"})
+     * @Rest\Get("/indexIconographiques")
      */
-    public function getVillesAction(Request $request)
+    public function getIndexIconographiquesAction(Request $request)
     {
-        $villes = $this->getDoctrine()->getEntityManager()
-                ->getRepository(Villes::class)
+        $indexIconographiques = $this->getDoctrine()->getEntityManager()
+                ->getRepository(IndexIconographiques::class)
                 ->findAll();
-        /* @var $villes ville[] */
+        /* @var $indexIconographiques indexIconographique[] */
 
-        return $villes;
+        return $indexIconographiques;
     }
 
     /**
-     * @Rest\View(serializerGroups={"villes"})
-     * @Rest\Get("/villes/{id}")
+     * @Rest\View(serializerGroups={"indexicos"})
+     * @Rest\Get("/indexIconographiques/{id}")
      */
-    public function getVilleAction($id,Request $request)
+    public function getIndexIconographiqueAction($id,Request $request)
     {
-        $ville = $this->getDoctrine()->getEntityManager()
-                ->getRepository(Villes::class)
+        $indexIconographique = $this->getDoctrine()->getEntityManager()
+                ->getRepository(IndexIconographiques::class)
                 ->find($id);
-        /* @var $ville ville */
+        /* @var $indexIconographique indexIconographique */
 
-        if (empty($ville)) {
-            return \FOS\RestBundle\View\View::create(['message' => 'Villes not found'], Response::HTTP_NOT_FOUND);
+        if (empty($indexIconographique)) {
+            return \FOS\RestBundle\View\View::create(['message' => 'IndexIconographiques not found'], Response::HTTP_NOT_FOUND);
         }
 
-        return $ville;
+        return $indexIconographique;
   
     }
 
     /**
-     * @Rest\View(statusCode=Response::HTTP_CREATED,serializerGroups={"villes"})
-     * @Rest\Post("/villes")
+     * @Rest\View(statusCode=Response::HTTP_CREATED,serializerGroups={"indexicos"})
+     * @Rest\Post("/indexIconographiques")
      */
-    public function postVilleAction(Request $request)
+    public function postIndexIconographiqueAction(Request $request)
     {
-        $ville = new Villes();
-        $form = $this->createForm(VillesType::class, $ville);
+        $indexIconographique = new IndexIconographiques();
+        $form = $this->createForm(IndexIconographiquesType::class, $indexIconographique);
 
         $form->submit($request->request->all());
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getEntityManager();
-            $em->persist($ville);
+            $em->persist($indexIconographique);
             $em->flush();
-            return $ville;
+            return $indexIconographique;
         } else {
             return $form;
         }
     }
 
      /**
-     * @Rest\View(statusCode=Response::HTTP_NO_CONTENT,serializerGroups={"villes"})
-     * @Rest\Delete("/villes/{id}")
+     * @Rest\View(statusCode=Response::HTTP_NO_CONTENT,serializerGroups={"indexicos"})
+     * @Rest\Delete("/indexIconographiques/{id}")
      */
-    public function removeVilleAction(Request $request)
+    public function removeIndexIconographiqueAction(Request $request)
     {
         $em = $this->getDoctrine()->getEntityManager();
-        $ville = $em->getRepository(Villes::class)
+        $indexIconographique = $em->getRepository(IndexIconographiques::class)
                     ->find($request->get('id'));
-        /* @var $ville ville */
+        /* @var $indexIconographique indexIconographique */
 
-        if ($ville){
-            $em->remove($ville);
+        if ($indexIconographique){
+            $em->remove($indexIconographique);
             $em->flush();
         }
         
     }
 
     /**
-     * @Rest\View(serializerGroups={"villes"})
-     * @Rest\Put("/villes/{id}")
+     * @Rest\View(serializerGroups={"indexicos"})
+     * @Rest\Put("/indexIconographiques/{id}")
      */
-    public function updateVilleAction(Request $request)
+    public function updateIndexIconographiqueAction(Request $request)
     {
-        $ville = $this->getDoctrine()->getEntityManager()
-                ->getRepository(Villes::class)
+        $indexIconographique = $this->getDoctrine()->getEntityManager()
+                ->getRepository(IndexIconographiques::class)
                 ->find($request->get('id')); // L'identifiant en tant que paramètre n'est plus nécessaire
-        /* @var $ville ville */
+        /* @var $indexIconographique indexIconographique */
 
-        if (empty($ville)) {
-            return \FOS\RestBundle\View\View::create(['message' => 'Villes not found'], Response::HTTP_NOT_FOUND);
+        if (empty($indexIconographique)) {
+            return \FOS\RestBundle\View\View::create(['message' => 'IndexIconographiques not found'], Response::HTTP_NOT_FOUND);
         }
 
-        $form = $this->createForm(VillesType::class, $ville);
+        $form = $this->createForm(IndexIconographiquesType::class, $indexIconographique);
 
         $form->submit($request->request->all());
 
@@ -108,30 +108,30 @@ class VillesController extends Controller
             $em = $this->getDoctrine()->getEntityManager();
             // l'entité vient de la base, donc le merge n'est pas nécessaire.
             // il est utilisé juste par soucis de clarté
-            $em->merge($ville);
+            $em->merge($indexIconographique);
             $em->flush();
-            return $ville;
+            return $indexIconographique;
         } else {
             return $form;
         }
     }
 
     /**
-     * @Rest\View(serializerGroups={"villes"})
-     * @Rest\Patch("/villes/{id}")
+     * @Rest\View(serializerGroups={"indexicos"})
+     * @Rest\Patch("/indexIconographiques/{id}")
      */
-    public function patchVilleAction(Request $request)
+    public function patchIndexIconographiqueAction(Request $request)
     {
-        $ville = $this->getDoctrine()->getEntityManager()
-                ->getRepository(Villes::class)
+        $indexIconographique = $this->getDoctrine()->getEntityManager()
+                ->getRepository(IndexIconographiques::class)
                 ->find($request->get('id')); // L'identifiant en tant que paramètre n'est plus nécessaire
-        /* @var $ville Villes */
+        /* @var $indexIconographique IndexIconographiques */
 
-        if (empty($ville)) {
-            return \FOS\RestBundle\View\View::create(['message' => 'Villes not found'], Response::HTTP_NOT_FOUND);
+        if (empty($indexIconographique)) {
+            return \FOS\RestBundle\View\View::create(['message' => 'IndexIconographiques not found'], Response::HTTP_NOT_FOUND);
         }
 
-        $form = $this->createForm(VillesType::class, $ville);
+        $form = $this->createForm(IndexIconographiquesType::class, $indexIconographique);
 
          // Le paramètre false dit à Symfony de garder les valeurs dans notre 
          // entité si l'utilisateur n'en fournit pas une dans sa requête
@@ -141,9 +141,9 @@ class VillesController extends Controller
             $em = $this->getDoctrine()->getEntityManager();
             // l'entité vient de la base, donc le merge n'est pas nécessaire.
             // il est utilisé juste par soucis de clarté
-            $em->merge($ville);
+            $em->merge($indexIconographique);
             $em->flush();
-            return $ville;
+            return $indexIconographique;
         } else {
             return $form;
         }

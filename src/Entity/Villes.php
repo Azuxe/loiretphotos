@@ -17,6 +17,7 @@ class Villes
 {
 
     /**
+     * @Groups({"villes","tailles","sujets","series","indexpers","indexicos","cindoc", "cliches"})
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -24,19 +25,19 @@ class Villes
     private $id;
 
     /**
-     * @Groups({"villes", "cliches"})
+     * @Groups({"villes","tailles","sujets","series","indexpers","indexicos","cindoc", "cliches"})
      * @ORM\Column(type="string", length=255, nullable=false,unique=true)
      */
     private $nom;
 
     /**
-     * @Groups({"villes", "cliches"})
+     * @Groups({"villes","tailles","sujets","series","indexpers","indexicos","cindoc", "cliches"})
      * @ORM\Column(type="float", nullable=true)
      */
     private $lat;
 
     /**
-     * @Groups({"villes", "cliches"})
+     * @Groups({"villes","tailles","sujets","series","indexpers","indexicos","cindoc", "cliches"})
      * @ORM\Column(type="float", nullable=true)
      */
     private $longi;

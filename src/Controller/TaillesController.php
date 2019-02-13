@@ -8,99 +8,99 @@ use Symfony\Component\HttpFoundation\Response;
 use FOS\RestBundle\Controller\Annotations as Rest; // alias pour toutes les annotations
 use FOS\RestBundle\View\ViewHandler;
 use FOS\RestBundle\View\View; // Utilisation de la vue de FOSRestBundle
-use App\Entity\Villes;
-use App\Form\VillesType;
-class VillesController extends Controller
+use App\Entity\Tailles;
+use App\Form\TaillesType;
+class TaillesController extends Controller
 {
 
     /**
-     * @Rest\View(serializerGroups={"villes"})
-     * @Rest\Get("/villes")
+     * @Rest\View(serializerGroups={"tailles"})
+     * @Rest\Get("/tailles")
      */
-    public function getVillesAction(Request $request)
+    public function getTaillesAction(Request $request)
     {
-        $villes = $this->getDoctrine()->getEntityManager()
-                ->getRepository(Villes::class)
+        $tailles = $this->getDoctrine()->getEntityManager()
+                ->getRepository(Tailles::class)
                 ->findAll();
-        /* @var $villes ville[] */
+        /* @var $tailles taille[] */
 
-        return $villes;
+        return $tailles;
     }
 
     /**
-     * @Rest\View(serializerGroups={"villes"})
-     * @Rest\Get("/villes/{id}")
+     * @Rest\View(serializerGroups={"tailles"})
+     * @Rest\Get("/tailles/{id}")
      */
-    public function getVilleAction($id,Request $request)
+    public function getTailleAction($id,Request $request)
     {
-        $ville = $this->getDoctrine()->getEntityManager()
-                ->getRepository(Villes::class)
+        $taille = $this->getDoctrine()->getEntityManager()
+                ->getRepository(Tailles::class)
                 ->find($id);
-        /* @var $ville ville */
+        /* @var $taille taille */
 
-        if (empty($ville)) {
-            return \FOS\RestBundle\View\View::create(['message' => 'Villes not found'], Response::HTTP_NOT_FOUND);
+        if (empty($taille)) {
+            return \FOS\RestBundle\View\View::create(['message' => 'Tailles not found'], Response::HTTP_NOT_FOUND);
         }
 
-        return $ville;
+        return $taille;
   
     }
 
     /**
-     * @Rest\View(statusCode=Response::HTTP_CREATED,serializerGroups={"villes"})
-     * @Rest\Post("/villes")
+     * @Rest\View(statusCode=Response::HTTP_CREATED,serializerGroups={"tailles"})
+     * @Rest\Post("/tailles")
      */
-    public function postVilleAction(Request $request)
+    public function postTailleAction(Request $request)
     {
-        $ville = new Villes();
-        $form = $this->createForm(VillesType::class, $ville);
+        $taille = new Tailles();
+        $form = $this->createForm(TaillesType::class, $taille);
 
         $form->submit($request->request->all());
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getEntityManager();
-            $em->persist($ville);
+            $em->persist($taille);
             $em->flush();
-            return $ville;
+            return $taille;
         } else {
             return $form;
         }
     }
 
      /**
-     * @Rest\View(statusCode=Response::HTTP_NO_CONTENT,serializerGroups={"villes"})
-     * @Rest\Delete("/villes/{id}")
+     * @Rest\View(statusCode=Response::HTTP_NO_CONTENT,serializerGroups={"tailles"})
+     * @Rest\Delete("/tailles/{id}")
      */
-    public function removeVilleAction(Request $request)
+    public function removeTailleAction(Request $request)
     {
         $em = $this->getDoctrine()->getEntityManager();
-        $ville = $em->getRepository(Villes::class)
+        $taille = $em->getRepository(Tailles::class)
                     ->find($request->get('id'));
-        /* @var $ville ville */
+        /* @var $taille taille */
 
-        if ($ville){
-            $em->remove($ville);
+        if ($taille){
+            $em->remove($taille);
             $em->flush();
         }
         
     }
 
     /**
-     * @Rest\View(serializerGroups={"villes"})
-     * @Rest\Put("/villes/{id}")
+     * @Rest\View(serializerGroups={"tailles"})
+     * @Rest\Put("/tailles/{id}")
      */
-    public function updateVilleAction(Request $request)
+    public function updateTailleAction(Request $request)
     {
-        $ville = $this->getDoctrine()->getEntityManager()
-                ->getRepository(Villes::class)
+        $taille = $this->getDoctrine()->getEntityManager()
+                ->getRepository(Tailles::class)
                 ->find($request->get('id')); // L'identifiant en tant que paramètre n'est plus nécessaire
-        /* @var $ville ville */
+        /* @var $taille taille */
 
-        if (empty($ville)) {
-            return \FOS\RestBundle\View\View::create(['message' => 'Villes not found'], Response::HTTP_NOT_FOUND);
+        if (empty($taille)) {
+            return \FOS\RestBundle\View\View::create(['message' => 'Tailles not found'], Response::HTTP_NOT_FOUND);
         }
 
-        $form = $this->createForm(VillesType::class, $ville);
+        $form = $this->createForm(TaillesType::class, $taille);
 
         $form->submit($request->request->all());
 
@@ -108,30 +108,30 @@ class VillesController extends Controller
             $em = $this->getDoctrine()->getEntityManager();
             // l'entité vient de la base, donc le merge n'est pas nécessaire.
             // il est utilisé juste par soucis de clarté
-            $em->merge($ville);
+            $em->merge($taille);
             $em->flush();
-            return $ville;
+            return $taille;
         } else {
             return $form;
         }
     }
 
     /**
-     * @Rest\View(serializerGroups={"villes"})
-     * @Rest\Patch("/villes/{id}")
+     * @Rest\View(serializerGroups={"tailles"})
+     * @Rest\Patch("/tailles/{id}")
      */
-    public function patchVilleAction(Request $request)
+    public function patchTailleAction(Request $request)
     {
-        $ville = $this->getDoctrine()->getEntityManager()
-                ->getRepository(Villes::class)
+        $taille = $this->getDoctrine()->getEntityManager()
+                ->getRepository(Tailles::class)
                 ->find($request->get('id')); // L'identifiant en tant que paramètre n'est plus nécessaire
-        /* @var $ville Villes */
+        /* @var $taille Tailles */
 
-        if (empty($ville)) {
-            return \FOS\RestBundle\View\View::create(['message' => 'Villes not found'], Response::HTTP_NOT_FOUND);
+        if (empty($taille)) {
+            return \FOS\RestBundle\View\View::create(['message' => 'Tailles not found'], Response::HTTP_NOT_FOUND);
         }
 
-        $form = $this->createForm(VillesType::class, $ville);
+        $form = $this->createForm(TaillesType::class, $taille);
 
          // Le paramètre false dit à Symfony de garder les valeurs dans notre 
          // entité si l'utilisateur n'en fournit pas une dans sa requête
@@ -141,9 +141,9 @@ class VillesController extends Controller
             $em = $this->getDoctrine()->getEntityManager();
             // l'entité vient de la base, donc le merge n'est pas nécessaire.
             // il est utilisé juste par soucis de clarté
-            $em->merge($ville);
+            $em->merge($taille);
             $em->flush();
-            return $ville;
+            return $taille;
         } else {
             return $form;
         }

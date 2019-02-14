@@ -14,6 +14,16 @@ class SujetsController extends Controller
 {
 
     /**
+     * @Rest\Get("/sujets/columns")
+     */
+    public function getSujetsColumnAction(Request $request)
+    {
+        $columnNames = $this->getDoctrine()->getEntityManager()
+                 ->getClassMetadata(Sujets::class)->getColumnNames();
+        return $columnNames;
+    }
+
+    /**
      * @Rest\View(serializerGroups={"sujets"})
      * @Rest\Get("/sujets")
      */

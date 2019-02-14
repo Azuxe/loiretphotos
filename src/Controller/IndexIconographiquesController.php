@@ -14,6 +14,16 @@ class IndexIconographiquesController extends Controller
 {
 
     /**
+     * @Rest\Get("/indexIconographiques/columns")
+     */
+    public function getClichesColumnAction(Request $request)
+    {
+        $columnNames = $this->getDoctrine()->getEntityManager()
+                 ->getClassMetadata(IndexIconographiques::class)->getColumnNames();
+        return $columnNames;
+    }
+
+    /**
      * @Rest\View(serializerGroups={"indexicos"})
      * @Rest\Get("/indexIconographiques")
      */

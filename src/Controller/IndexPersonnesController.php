@@ -14,6 +14,16 @@ class IndexPersonnesController extends Controller
 {
 
     /**
+     * @Rest\Get("/indexPersonnes/columns")
+     */
+    public function getIndexPersonnesColumnAction(Request $request)
+    {
+        $columnNames = $this->getDoctrine()->getEntityManager()
+                 ->getClassMetadata(IndexPersonnes::class)->getColumnNames();
+        return $columnNames;
+    }
+
+    /**
      * @Rest\View(serializerGroups={"indexpers"})
      * @Rest\Get("/indexPersonnes")
      */

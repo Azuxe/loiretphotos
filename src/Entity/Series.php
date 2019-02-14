@@ -30,7 +30,7 @@ class Series
 
     /**
      * @Groups({"villes","tailles","sujets","series","indexpers","indexicos","cindoc", "cliches"})
-     * @ORM\Column(type="string", length=5, nullable=false,unique = true)
+     * @ORM\Column(type="string", length=5, nullable=true,unique = true)
      */
     private $serie;
 

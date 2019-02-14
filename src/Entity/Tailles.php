@@ -10,7 +10,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\TaillesRepository")
- * @ORM\Table(name="Tailles",uniqueConstraints={@ORM\UniqueConstraint(name="tailles_unique", columns={"hauteur_cm", "largeur_cm"})})
+ * @ORM\Table(name="Tailles")
+ * @ORM\Table(uniqueConstraints={@ORM\UniqueConstraint(name="TAILLE_HAUTEUR_LARGEUR", columns={"hauteur_cm", "largeur_cm"})})
  */
 class Tailles
 {
@@ -24,13 +25,13 @@ class Tailles
 
     /**
      * @Groups({"villes","tailles","sujets","series","indexpers","indexicos","cindoc", "cliches"})
-     * @ORM\Column(type="float", nullable=false)
+     * @ORM\Column(type="float", nullable=true)
      */
     private $hauteur_cm;
 
     /**
      * @Groups({"villes","tailles","sujets","series","indexpers","indexicos","cindoc", "cliches"})
-     * @ORM\Column(type="float", nullable=false)
+     * @ORM\Column(type="float", nullable=true)
      */
     private $largeur_cm;
 

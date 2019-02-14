@@ -14,6 +14,16 @@ class VillesController extends Controller
 {
 
     /**
+     * @Rest\Get("/villes/columns")
+     */
+    public function getVillesColumnAction(Request $request)
+    {
+        $columnNames = $this->getDoctrine()->getEntityManager()
+                 ->getClassMetadata(Villes::class)->getColumnNames();
+        return $columnNames;
+    }
+
+    /**
      * @Rest\View(serializerGroups={"villes"})
      * @Rest\Get("/villes")
     */

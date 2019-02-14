@@ -11,6 +11,16 @@ use FOS\RestBundle\Controller\Annotations as Rest; // alias pour toutes les anno
 use FOS\RestBundle\View\ViewHandler;
 use FOS\RestBundle\View\View; // Utilisation de la vue de FOSRestBundle
 use App\Entity\Cliches;
+use App\Entity\Villes;
+use App\Entity\Tailles;
+use App\Entity\Sujets;
+use App\Entity\Series;
+use App\Entity\IndexPersonnes;
+use App\Entity\IndexIconographiques;
+use App\Entity\Cindoc;  
+
+
+
 use App\Form\ClichesType;
 class ClichesController extends Controller
 {
@@ -101,10 +111,83 @@ class ClichesController extends Controller
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getEntityManager();
-            foreach ($cliche->getVilles() as $ville) {
-                $ville->addClich($cliche);
-                $cliche->addVille($ville);
+
+            // Insertion des villes
+            for ($i=0; $i < count($cliche->getVilles()); $i++) {
+                $ville = $cliche->getVilles()[$i]; 
+                $v = $em->getRepository(Villes::class)->findOneBy(array('nom' => $ville->getNom()));
+                if (empty($v)) { // Si elle n'existe pas dans la db, on l'insert
+                    $ville->addClich($cliche);
+                }else{ // sinon on modifie celle présente dans $cliche par celle de la base
+                    $cliche->getVilles()[$i] = $v;
+                    $v->addClich($cliche);
+                }
             }
+                    $taille = $cliche->getTaille();
+                    $t = $em->getRepository(Tailles::class)->findOneBy(array('hauteur_cm' => $taille->getHauteurCm(),'largeur_cm' => $taille->getLargeurCm()));
+                    if (empty($t)) {
+                        $taille->addClich($cliche);
+                        $cliche->setTaille($taille);
+                    }else{
+                        $t->addClich($cliche);
+                        $cliche->setTaille($t);
+                    }
+
+                for ($i=0; $i < count($cliche->getSujets()); $i++) {
+                    $sujet = $cliche->getSujets()[$i]; 
+                    $s = $em->getRepository(Sujets::class)->findOneBy(array('sujet' => $sujet->getSujet()));
+                    if (empty($s)) { // Si elle n'existe pas dans la db, on l'insert
+                        $sujet->addClich($cliche);
+                    }else{ // sinon on modifie celle présente dans $cliche par celle de la base
+                        $cliche->getSujets()[$i] = $s;
+                        $s->addClich($cliche);
+                    }
+                }
+
+                    $serie = $cliche->getSerie();
+                    $s = $em->getRepository(Series::class)->findOneBy(array('serie' => $serie->getSerie()));
+                    if (empty($s)) {
+                        $serie->addClich($cliche);
+                        $cliche->setSerie($serie);
+                    }else{
+                        $s->addClich($cliche);
+                        $cliche->setSerie($s);
+                    }
+
+                for ($i=0; $i < count($cliche->getIndexIconographiques()); $i++) {
+                    $newindex = $cliche->getIndexIconographiques()[$i]; 
+                    $index = $em->getRepository(IndexIconographiques::class)->findOneBy(array('indexIco' => $newindex->getIndexIco()));
+                    if (empty($index)) { // Si elle n'existe pas dans la db, on l'insert
+                        $newindex->addClich($cliche);
+                    }else{ // sinon on modifie celle présente dans $cliche par celle de la base
+                        $cliche->getIndexIconographiques()[$i] = $index;
+                        $index->addClich($cliche);
+                    }
+                }
+
+                for ($i=0; $i < count($cliche->getIndexPersonnes()); $i++) {
+                    $newindex = $cliche->getIndexPersonnes()[$i]; 
+                    $index = $em->getRepository(IndexPersonnes::class)->findOneBy(array('indexPersonne' => $newindex->getIndexPersonne()));
+                    if (empty($index)) { // Si elle n'existe pas dans la db, on l'insert
+                        $newindex->addClich($cliche);
+                    }else{ // sinon on modifie celle présente dans $cliche par celle de la base
+                        $cliche->getIndexPersonnes()[$i] = $index;
+                        $index->addClich($cliche);
+                    }
+                }
+
+                for ($i=0; $i < count($cliche->getCindoc()); $i++) {
+                    $newcindoc = $cliche->getCindoc()[$i]; 
+                    $cindoc = $em->getRepository(Cindoc::class)->findOneBy(array('cindoc' => $newcindoc->getCindoc()));
+                    if (empty($cindoc)) { // Si elle n'existe pas dans la db, on l'insert
+                        $newcindoc->addClich($cliche);
+                    }else{ // sinon on modifie celle présente dans $cliche par celle de la base
+                        $cliche->getCindoc()[$i] = $cindoc;
+                        $cindoc->addClich($cliche);
+                    }
+                }
+                
+                
             $em->persist($cliche);
             $em->flush();
             return $cliche;
@@ -112,6 +195,7 @@ class ClichesController extends Controller
             return $form;
         }
     }
+
 
      /**
      * @Rest\View(statusCode=Response::HTTP_NO_CONTENT,serializerGroups={"cliches"})

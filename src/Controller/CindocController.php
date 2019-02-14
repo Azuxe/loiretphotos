@@ -14,6 +14,16 @@ class CindocController extends Controller
 {
 
     /**
+     * @Rest\Get("/cindocs/columns")
+     */
+    public function getCindocsColumnAction(Request $request)
+    {
+        $columnNames = $this->getDoctrine()->getEntityManager()
+                 ->getClassMetadata(Cindoc::class)->getColumnNames();
+        return $columnNames;
+    }
+
+    /**
      * @Rest\View(serializerGroups={"cindoc"})
      * @Rest\Get("/cindocs")
      */

@@ -14,6 +14,16 @@ class TaillesController extends Controller
 {
 
     /**
+     * @Rest\Get("/tailles/columns")
+     */
+    public function getTaillesColumnAction(Request $request)
+    {
+        $columnNames = $this->getDoctrine()->getEntityManager()
+                 ->getClassMetadata(Tailles::class)->getColumnNames();
+        return $columnNames;
+    }
+
+    /**
      * @Rest\View(serializerGroups={"tailles"})
      * @Rest\Get("/tailles")
      */

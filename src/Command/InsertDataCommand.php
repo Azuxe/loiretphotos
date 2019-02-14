@@ -54,7 +54,7 @@ class InsertDataCommand extends ContainerAwareCommand
 
         $row = 0;
         $first = true;
-        if (($handle = fopen("projet.csv", "r")) !== FALSE) {
+        if (($handle = fopen("projetok.csv", "r")) !== FALSE) {
             while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
                 if($row == 0){
                     $row++;
@@ -131,7 +131,7 @@ class InsertDataCommand extends ContainerAwareCommand
                         break;
                         case 6: $cliche->setDescription(trim($data[$c]));
                         break;
-                        case 7: // date
+                        case 7: $cliche->setDateDePrise(date_create($data[$c]));
                         break;
                         case 8: $cliche->setNoteDeBasDePage(trim($data[$c]));
                         break;

@@ -137,6 +137,7 @@ BEGIN
         IF tiret > 0 THEN
         tmp = regexp_replace(tmp, '^.*-', '', 'g');
         END IF;
+        SELECT convertDate(tmp) INTO tmp;
         UPDATE projet SET date_prise = tmp WHERE CURRENT OF curs;
     END LOOP;
     CLOSE curs;

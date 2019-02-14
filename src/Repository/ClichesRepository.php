@@ -222,30 +222,35 @@ class ClichesRepository extends ServiceEntityRepository
         if(!empty($array->get('datedeprise'))){
             $dateprise = explode(':',$array->get('datedeprise'));
             $operateur = array_shift($dateprise);
-            $date_de_prise = strtotime($dateprise);
+            $date_de_prise = date_create(array_shift($dateprise));
             switch ($operateur) {
                 case 'lt':
-                    $qb->andwhere($qb->expr()->lt('c.date_de_prise', $date_de_prise));
+                    //$qb->andwhere($qb->expr()->lt('c.date_de_prise', $date_de_prise));
+                    $qb->andwhere('c.date_de_prise < :date_de_prise')
+                    ->setParameter('date_de_prise', $date_de_prise);
                 break;
                 case 'lte':
-                    $qb->andwhere($qb->expr()->lte('c.date_de_prise', $date_de_prise));
-                    break;
+                $qb->andwhere('c.date_de_prise <= :date_de_prise')
+                ->setParameter('date_de_prise', $date_de_prise);                    break;
                 case 'gt':
-                    $qb->andwhere($qb->expr()->gt('c.date_de_prise', $date_de_prise));
+                $qb->andwhere('c.date_de_prise > :date_de_prise')
+                ->setParameter('date_de_prise', $date_de_prise);                    
                     break;
                 case 'gte':
-                    $qb->andwhere($qb->expr()->gte('c.date_de_prise', $date_de_prise));
-                    break;
+                $qb->andwhere('c.date_de_prise >= :date_de_prise')
+                ->setParameter('date_de_prise', $date_de_prise);                    break;
                 case 'eq':
-                    $qb->andwhere($qb->expr()->eq('c.date_de_prise', $date_de_prise));
-                    break;
+                $qb->andwhere('c.date_de_prise = :date_de_prise')
+                ->setParameter('date_de_prise', $date_de_prise);
                 case 'bt':
-                    $date_de_priseint = strtotime($date_de_prise);
-                    $qb->andwhere($qb->expr()->between('c.date_de_prise', $date_de_prise,$date_de_priseint));
+                    $date_de_priseint =  date_create(array_shift($dateprise));
+                    $qb->where('c.date_de_prise BETWEEN :datefirst AND :datelast')
+                        ->setParameter('datefirst', $date_de_prise)
+                        ->setParameter('datelast', $date_de_priseint);
                     break;
                 default:
-                    $qb->andwhere($qb->expr()->eq('c.date_de_prise', $date_de_prise));
-                    break;
+                $qb->andwhere('c.date_de_prise = :date_de_prise')
+                ->setParameter('date_de_prise', $date_de_prise);                    break;
             }
         }
 

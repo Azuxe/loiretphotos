@@ -249,6 +249,10 @@ class ClichesRepository extends ServiceEntityRepository
             }
         }
 
+        if(!empty($array->get('limit'))){
+            $qb->setMaxResults($array->get('limit'));
+        }
+
         //etc
 
         return $qb->getQuery()->getResult();

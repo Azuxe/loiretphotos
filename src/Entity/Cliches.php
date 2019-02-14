@@ -73,7 +73,7 @@ class Cliches
     /**
      * @Groups({"villes","tailles","sujets","series","indexpers","indexicos","cindoc", "cliches"})
      * 
-     * @ORM\Column(type="integer", nullable=false)
+     * @ORM\Column(type="integer", nullable=true)
      */
     private $nb_Cliche;
 

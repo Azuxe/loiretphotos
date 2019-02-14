@@ -66,6 +66,7 @@ class ClichesController extends Controller
          * @QueryParam(name="datedeprise", requirements=".*", default="", description="Index de début de la pagination")
          * @QueryParam(name="descriptionin", requirements=".*", default="", description="Index de début de la pagination")
          * @QueryParam(name="descriptionout", requirements=".*", default="", description="Index de début de la pagination")
+         * @QueryParam(name="limit", requirements="\d+", default="", description="Index de fin de la pagination")
      */
     public function getClichesAction(ParamFetcher $paramFetcher,Request $request)
     {

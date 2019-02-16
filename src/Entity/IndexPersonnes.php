@@ -10,6 +10,10 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\IndexPersonnesRepository")
+ * @ORM\Table(indexes={
+ *  @ORM\Index(name="search_indexper", columns={"index_personne"})
+ * })
+ * @UniqueEntity("index_personne")
  */
 class IndexPersonnes
 {

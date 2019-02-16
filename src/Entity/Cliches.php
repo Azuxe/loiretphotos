@@ -10,6 +10,10 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ClichesRepository")
+ * @ORM\Table(indexes={
+ *  @ORM\Index(name="search_description", columns={"description"}),
+ *  @ORM\Index(name="search_date", columns={"date_de_prise"})
+ * })
  */
 class Cliches
 {

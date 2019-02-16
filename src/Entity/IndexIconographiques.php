@@ -10,6 +10,10 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\IndexIconographiquesRepository")
+ * @ORM\Table(indexes={
+ *  @ORM\Index(name="search_indexico", columns={"index_ico"})
+ * })
+ * @UniqueEntity("index_ico")
  */
 class IndexIconographiques
 {

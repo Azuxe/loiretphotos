@@ -34,22 +34,22 @@ class ClichesRepository extends ServiceEntityRepository
   
         if(!empty($array->get('villesin'))){
             $villes = explode(':',$array->get('villesin'));
-            $qb->andWhere($qb->expr()->in('villes.nom', $villes));
+            $qb->andWhere($qb->expr()->in('villes.id', $villes));
         }
 
         if(!empty($array->get('villesout'))){
             $villes = explode(':',$array->get('villesout'));
-            $qb->andwhere($qb->expr()->notin('villes.nom', $villes));
+            $qb->andwhere($qb->expr()->notin('villes.id', $villes));
         }
 
         if(!empty($array->get('sujetsin'))){
             $sujets = explode(':',$array->get('sujetsin'));
-            $qb->andwhere($qb->expr()->in('sujets.sujet', $sujets));
+            $qb->andwhere($qb->expr()->in('sujets.id', $sujets));
         }
 
         if(!empty($array->get('sujetsout'))){
             $sujets = explode(':',$array->get('sujetsout'));
-            $qb->andwhere($qb->expr()->notin('sujets.sujet', $sujets));
+            $qb->andwhere($qb->expr()->notin('sujets.id', $sujets));
         }
 
         if(!empty($array->get('hauteur'))){
@@ -106,42 +106,42 @@ class ClichesRepository extends ServiceEntityRepository
 
         if(!empty($array->get('seriesin'))){
             $series = explode(':',$array->get('seriesin'));
-            $qb->andwhere($qb->expr()->in('series.serie', $series));
+            $qb->andwhere($qb->expr()->in('series.id', $series));
         }
 
         if(!empty($array->get('seriesout'))){
             $series = explode(':',$array->get('seriesout'));
-            $qb->andwhere($qb->expr()->notin('series.serie', $series));
+            $qb->andwhere($qb->expr()->notin('series.id', $series));
         }
 
         if(!empty($array->get('indexperin'))){
             $indexPersonnes = explode(':',$array->get('indexperin'));
-            $qb->andwhere($qb->expr()->in('indexpersonnes.indexPersonne', $indexPersonnes));
+            $qb->andwhere($qb->expr()->in('indexpersonnes.id', $indexPersonnes));
         }
 
         if(!empty($array->get('indexperout'))){
             $indexPersonnes = explode(':',$array->get('indexperout'));
-            $qb->andwhere($qb->expr()->notin('indexpersonnes.indexPersonne', $indexPersonnes));//?
+            $qb->andwhere($qb->expr()->notin('indexpersonnes.id', $indexPersonnes));//?
         }
 
         if(!empty($array->get('indexicoin'))){
             $indexIconographique = explode(':',$array->get('indexicoin'));
-            $qb->andwhere($qb->expr()->in('indexiconographiques.indexIco', $indexIconographique));
+            $qb->andwhere($qb->expr()->in('indexiconographiques.id', $indexIconographique));
         }
 
         if(!empty($array->get('indexicoout'))){
             $indexIconographique = explode(':',$array->get('indexicoout'));
-            $qb->andwhere($qb->expr()->notin('indexiconographiques.indexIco', $indexIconographique));
+            $qb->andwhere($qb->expr()->notin('indexiconographiques.id', $indexIconographique));
         }
 
         if(!empty($array->get('cindocin'))){
             $cindoc = explode(':',$array->get('cindocin'));
-            $qb->andwhere($qb->expr()->in('cindoc.cindoc', $cindoc));
+            $qb->andwhere($qb->expr()->in('cindoc.id', $cindoc));
         }
 
         if(!empty($array->get('cindocout'))){
             $cindoc = explode(':',$array->get('cindocout'));
-            $qb->andwhere($qb->expr()->notin('cindoc.cindoc', $cindoc));
+            $qb->andwhere($qb->expr()->notin('cindoc.id', $cindoc));
         }
 
         if(!empty($array->get('remarquein'))){
@@ -242,6 +242,11 @@ class ClichesRepository extends ServiceEntityRepository
                 case 'eq':
                 $qb->andwhere('c.date_de_prise = :date_de_prise')
                 ->setParameter('date_de_prise', $date_de_prise);
+                break;
+                case 'neq':
+                $qb->andwhere('c.date_de_prise != :date_de_prise')
+                ->setParameter('date_de_prise', $date_de_prise);
+                break;
                 case 'bt':
                     $date_de_priseint =  date_create(array_shift($dateprise));
                     $qb->where('c.date_de_prise BETWEEN :datefirst AND :datelast')
@@ -256,6 +261,10 @@ class ClichesRepository extends ServiceEntityRepository
 
         if(!empty($array->get('limit'))){
             $qb->setMaxResults($array->get('limit'));
+        }
+
+        if (!empty($array->get('offset'))) {
+            $qb->setFirstResult($array->get('offset'));
         }
 
         //etc

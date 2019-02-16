@@ -18,5 +18,7 @@ framework:
     
     serializer:
         enabled: true
-
+# app/config/config.yml
+    templating:
+        engines: ['twig']
     validation: { enable_annotations: true }

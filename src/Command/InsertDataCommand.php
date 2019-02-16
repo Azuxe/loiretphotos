@@ -54,7 +54,7 @@ class InsertDataCommand extends ContainerAwareCommand
 
         $row = 0;
         $first = true;
-        if (($handle = fopen("projetok.csv", "r")) !== FALSE) {
+        if (($handle = fopen("projet.csv", "r")) !== FALSE) {
             while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
                 if($row == 0){
                     $row++;
@@ -69,18 +69,17 @@ class InsertDataCommand extends ContainerAwareCommand
                         case 0:
                             if ($data[$c] != ""){
                                $cindoc = explode('|',$data[$c]);
-                                for ($i=0; $i < count($cindoc); $i++) {
+                               $cindoc = deleteDoublonIn($cindoc);
+                                foreach ($cindoc as $cindocval) {
                                     $newcindoc = new Cindoc();
-                                    $newcindoc->setCindoc(trim($cindoc[$i]));
+                                    $newcindoc->setCindoc($cindocval);
                                     $oldcindoc = $cindocrepo->findOneBy(array('cindoc' => $newcindoc->getCindoc()));
                                     if(empty($oldcindoc)){
                                         $cliche->addCindoc($newcindoc);
                                     }else{
                                         $cliche->addCindoc($oldcindoc);
                                     }
-                               }    
-        
-                            
+                                }                            
                         }
                         break;
                         case 1:
@@ -103,23 +102,27 @@ class InsertDataCommand extends ContainerAwareCommand
                         case 4:
                             if ($data[$c] != ""){
                                $villes = explode(',',$data[$c]);
-                                for ($i=0; $i < count($villes); $i++) {
-                                    $newville = new Villes();
-                                    $newville->setNom(trim($villes[$i]));
+                               $villes = deleteDoublonIn($villes);
+                               foreach ($villes as $ville) {
+                                $newville = new Villes();
+                                $newville->setNom($ville);
                                     $oldville = $villerepo->findOneBy(array('nom' => $newville->getNom()));
                                     if(empty($oldville)){
                                         $cliche->addVille($newville);
                                     }else{
                                         $cliche->addVille($oldville);
                                     }
-                               }    
-                        }
+                                }
+                               }
+    
+                        break;
                         case 5:
                             if ($data[$c] != ""){
                                $sujets = explode(',',$data[$c]);
-                                for ($i=0; $i < count($sujets); $i++) {
+                               $sujets = deleteDoublonIn($sujets);
+                               foreach ($sujets as $sujet) {
                                     $newsujet = new Sujets();
-                                    $newsujet->setSujet(trim($sujets[$i]));
+                                    $newsujet->setSujet($sujet);
                                     $oldsujet = $sujetrepo->findOneBy(array('sujet' => $newsujet->getSujet()));
                                     if(empty($oldsujet)){
                                         $cliche->addSujet($newsujet);
@@ -138,9 +141,10 @@ class InsertDataCommand extends ContainerAwareCommand
                         case 9: // indexperso
                             if ($data[$c] != ""){
                                $indexpersos = explode('/',$data[$c]);
-                                for ($i=0; $i < count($indexpersos); $i++) {
+                               $indexpersos = deleteDoublonIn($indexpersos);
+                               foreach ($indexpersos as $index) {
                                     $newiperso = new IndexPersonnes();
-                                    $newiperso->setIndexPersonne(trim($indexpersos[$i]));
+                                    $newiperso->setIndexPersonne($index);
                                     $oldiperso = $ipersrepo->findOneBy(array('indexPersonne' => $newiperso->getIndexPersonne()));
                                     if(empty($oldiperso)){
                                         $cliche->addIndexPersonne($newiperso);
@@ -149,14 +153,16 @@ class InsertDataCommand extends ContainerAwareCommand
                                     }
                                }    
                         }
+                        break;
                         case 10: $cliche->setFichier(trim($data[$c]));
                         break;
                         case 11: // indexico
                             if ($data[$c] != ""){
                                $indexicos = explode('/',$data[$c]);
-                                for ($i=0; $i < count($indexicos); $i++) {
+                               $indexicos = deleteDoublonIn($indexicos);
+                               foreach ($indexicos as $index) {
                                     $newindexico = new IndexIconographiques();
-                                    $newindexico->setIndexIco(trim($indexicos[$i]));
+                                    $newindexico->setIndexIco($index);
                                     $oldindexico = $iiconrepo->findOneBy(array('indexIco' => $newindexico->getIndexIco()));
                                     if(empty($oldindexico)){
                                         $cliche->addIndexIconographique($newindexico);
@@ -165,6 +171,7 @@ class InsertDataCommand extends ContainerAwareCommand
                                     }
                                }    
                         }
+                        break;
                         case 12: $cliche->setNbCliche(intval($data[$c]));
                         break;
                         case 13: // indexico
@@ -182,8 +189,11 @@ class InsertDataCommand extends ContainerAwareCommand
                         }
                         break;
                         case 14: $cliche->setSupport($data[$c]);
+                        break;
                         case 15: $cliche->setChroma($data[$c]);
+                        break;
                         case 16: $cliche->setRemarque(intval($data[$c]));
+                        break;
                         default:
                             # code...
                             break;
@@ -199,4 +209,11 @@ class InsertDataCommand extends ContainerAwareCommand
         }
 
     }
+}
+
+function deleteDoublonIn($array){
+    for ($i=0; $i < count($array); $i++) { 
+        $array[$i] = trim($array[$i]);
+    }
+    return array_unique($array);
 }

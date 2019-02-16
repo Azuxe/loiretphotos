@@ -10,6 +10,10 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CindocRepository")
+ * @ORM\Table(indexes={
+ *  @ORM\Index(name="search_cindoc", columns={"cindoc"})
+ * })
+ * @UniqueEntity("cindoc")
  */
 class Cindoc
 {
@@ -23,7 +27,7 @@ class Cindoc
 
     /**
      * @Groups({"villes","tailles","sujets","series","indexpers","indexicos","cindoc", "cliches"})
-     * @ORM\Column(type="string",length=255)
+     * @ORM\Column(type="string",length=255,unique=true)
      */
     private $cindoc;
 

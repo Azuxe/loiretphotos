@@ -11,6 +11,10 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\SujetsRepository")
+ * @ORM\Table(indexes={
+ * @ORM\Index(name="search_sujet", columns={"sujet"})
+ * })
+ * @UniqueEntity("sujet")
  */
 class Sujets
 {
